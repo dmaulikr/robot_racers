@@ -30,6 +30,7 @@ namespace UnityStandardAssets.Vehicles.Car
         [SerializeField] private float m_ReverseTorque;
         [SerializeField] private float m_MaxHandbrakeTorque;
         [SerializeField] private float m_Downforce = 100f;
+        [SerializeField] private float m_Jumpforce = 200f;
         [SerializeField] private SpeedType m_SpeedType;
         [SerializeField] private float m_Topspeed = 200;
         [SerializeField] private static int NoOfGears = 5;
@@ -126,7 +127,7 @@ namespace UnityStandardAssets.Vehicles.Car
         }
 
 
-        public void Move(float steering, float accel, float footbrake, float handbrake)
+        public void Move(float steering, float accel, float footbrake, bool jump)
         {
             for (int i = 0; i < 4; i++)
             {
@@ -141,7 +142,7 @@ namespace UnityStandardAssets.Vehicles.Car
             steering = Mathf.Clamp(steering, -1, 1);
             AccelInput = accel = Mathf.Clamp(accel, 0, 1);
             BrakeInput = footbrake = -1*Mathf.Clamp(footbrake, -1, 0);
-            handbrake = Mathf.Clamp(handbrake, 0, 1);
+            //handbrake = Mathf.Clamp(handbrake, 0, 1);
 
             //Set the steer on the front wheels.
             //Assuming that wheels 0 and 1 are the front wheels.
@@ -155,13 +156,15 @@ namespace UnityStandardAssets.Vehicles.Car
 
             //Set the handbrake.
             //Assuming that wheels 2 and 3 are the rear wheels.
-            if (handbrake > 0f)
+            /*if (handbrake > 0f)
             {
                 var hbTorque = handbrake*m_MaxHandbrakeTorque;
                 m_WheelColliders[2].brakeTorque = hbTorque;
                 m_WheelColliders[3].brakeTorque = hbTorque;
+            }*/
+            if (jump) {
+                AddUpForce();
             }
-
 
             CalculateRevs();
             GearChanging();
@@ -259,6 +262,12 @@ namespace UnityStandardAssets.Vehicles.Car
         private void AddDownForce()
         {
             m_WheelColliders[0].attachedRigidbody.AddForce(-transform.up*m_Downforce*
+                                                         m_WheelColliders[0].attachedRigidbody.velocity.magnitude);
+        }
+
+        // this is used to jump!
+        private void AddUpForce() {
+            m_WheelColliders[0].attachedRigidbody.AddForce(transform.up * m_Jumpforce *
                                                          m_WheelColliders[0].attachedRigidbody.velocity.magnitude);
         }
 
