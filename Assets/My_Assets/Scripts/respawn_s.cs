@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityStandardAssets.Utility;
 
 public class respawn_s : MonoBehaviour {
 
     private GameObject[] kill;
-    public WaypointList waypointList;
-    public Transform[] Waypoints {
-        get { return waypointList.items; }
-   }
+    //public WaypointList waypointList = new WaypointList();
+    public WaypointCircuit circuit;
 
 	// Use this for initialization
 	void Start () {
@@ -16,7 +15,7 @@ public class respawn_s : MonoBehaviour {
 
     void OnTriggerEnter(Collider col) {
         if (col.gameObject.tag == "Kill") {
-            Transform respawn_point = GetClosestWaypoint(Waypoints);
+            Transform respawn_point = GetClosestWaypoint(circuit.Waypoints);
             transform.position = respawn_point.position;
         }
     }

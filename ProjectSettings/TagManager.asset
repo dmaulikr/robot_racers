@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ShowOnPause
   - Kill
+  - Crate
   layers:
   - Default
   - TransparentFX
