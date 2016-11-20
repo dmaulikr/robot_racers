@@ -30,7 +30,7 @@ namespace UnityStandardAssets.Vehicles.Car
         [SerializeField] private float m_ReverseTorque;
         [SerializeField] private float m_MaxHandbrakeTorque;
         [SerializeField] private float m_Downforce = 100f;
-        [SerializeField] private float m_Jumpforce = 200f;
+        [SerializeField] private float m_Jumpforce = 10000f;
         [SerializeField] private SpeedType m_SpeedType;
         [SerializeField] private float m_Topspeed = 200;
         [SerializeField] private static int NoOfGears = 5;
@@ -163,6 +163,7 @@ namespace UnityStandardAssets.Vehicles.Car
                 m_WheelColliders[3].brakeTorque = hbTorque;
             }*/
             if (jump) {
+                print("JUMP!");
                 AddUpForce();
             }
 
@@ -170,8 +171,8 @@ namespace UnityStandardAssets.Vehicles.Car
             GearChanging();
 
             AddDownForce();
-            CheckForWheelSpin();
-            TractionControl();
+            CheckForWheelSpin(); // This does  graphics
+            TractionControl(); // This actually moves the car forward
         }
 
 
@@ -267,10 +268,8 @@ namespace UnityStandardAssets.Vehicles.Car
 
         // this is used to jump!
         private void AddUpForce() {
-            m_WheelColliders[0].attachedRigidbody.AddForce(transform.up * m_Jumpforce *
-                                                         m_WheelColliders[0].attachedRigidbody.velocity.magnitude);
+            m_Rigidbody.AddForce(transform.up * m_Jumpforce, ForceMode.Impulse);
         }
-
 
         // checks if the wheels are spinning and is so does three things
         // 1) emits particles
