@@ -27,19 +27,8 @@ public class lap_controller_s : MonoBehaviour {
     }
 
     void Update_Lap_Display() {
-        lap_display.text = "Laps: " + lap.ToString() + "/" + the_game_controller.laps_to_win.ToString();
-    }
-
-    void Update() {
-        if (the_game_controller.paused) {
-            if (Input.anyKey) {
-                the_game_controller.TogglePause();
-            }
-        } else {
-            //uses the escape button to pause and unpause the game
-            if (Input.GetKeyUp(KeyCode.Escape)) {
-                the_game_controller.TogglePause();
-            }
+        if (gameObject.tag == "Player") {
+            lap_display.text = "Laps: " + lap.ToString() + "/" + the_game_controller.laps_to_win.ToString();
         }
     }
 }
