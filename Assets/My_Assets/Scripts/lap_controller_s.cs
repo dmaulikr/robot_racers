@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityStandardAssets.Vehicles.Car;
+using UnityStandardAssets.Utility;
 
 public class lap_controller_s : MonoBehaviour {
 
@@ -8,6 +10,11 @@ public class lap_controller_s : MonoBehaviour {
     private int check = 0;
     public game_controller_s the_game_controller;
     public Text lap_display;
+
+    private CarAIControl my_ai;
+    private CarUserControl my_control;
+    private pause_controller_s my_pause;
+    private WaypointProgressTracker my_wpt;
 
     void OnTriggerEnter(Collider col) {
         if(col.gameObject.name == "FinishLine" && check == lap) {
@@ -23,7 +30,23 @@ public class lap_controller_s : MonoBehaviour {
     }
 
     void Start() {
+        my_ai = GetComponent<CarAIControl>();
+        my_control = GetComponent<CarUserControl>();
+        my_pause = GetComponent<pause_controller_s>();
+        my_wpt = GetComponent<WaypointProgressTracker>();
+
+        SetComponents();
         Update_Lap_Display();
+    }
+
+    void SetComponents() {
+        if (tag == "Player") {
+            my_ai.enabled = false;
+            my_wpt.enabled = false;
+        } else {
+            my_pause.enabled = false;
+            my_control.enabled = false;
+        }
     }
 
     void Update_Lap_Display() {

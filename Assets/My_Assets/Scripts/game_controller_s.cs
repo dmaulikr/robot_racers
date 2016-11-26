@@ -8,13 +8,16 @@ public class game_controller_s : MonoBehaviour {
     public int laps_to_win = 3;
     public List<GameObject> winners = new List<GameObject>();
     private int place = 0;
+    private bool begin = true;
 
     GameObject[] pauseObjects;
+    public countdown_s countdown;
 
     void Start() {
         Time.timeScale = 0;
         pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause");
         showPaused();
+        countdown.hideCountdown();
     }
 
     public void Finish(GameObject winner) {
@@ -56,5 +59,15 @@ public class game_controller_s : MonoBehaviour {
         foreach (GameObject g in pauseObjects) {
             g.SetActive(false);
         }
+        // If first time continuing, show countdown.
+        if (begin) {
+            begin = false;
+            showCountdown();
+        }
+    }
+
+    private void showCountdown() {
+        countdown.showCountdown();
+        Invoke("TurnOnCars", countdown.time);
     }
 }

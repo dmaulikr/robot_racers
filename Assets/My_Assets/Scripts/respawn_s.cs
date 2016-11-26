@@ -8,10 +8,22 @@ public class respawn_s : MonoBehaviour {
     //public WaypointList waypointList = new WaypointList();
     public WaypointCircuit circuit;
 
+    // For checking if car hasn't moved lately
+    public float time_to_wait = 2f;
+    public float move_threshold = 0.5f;
+    private Vector3 current_pos;
+
 	// Use this for initialization
 	void Awake () {
         rb = GetComponent<Rigidbody>();
 	}
+
+    void Start() {
+        current_pos = transform.position;
+        if (gameObject.tag == "NPC") {
+            Invoke("Check_Pos", time_to_wait);
+        }
+    }
 
     void OnTriggerEnter(Collider col) {
         print("Collision!");
@@ -46,6 +58,16 @@ public class respawn_s : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.R)) {
             Respawn();
         }
+    }
+
+    void Check_Pos() {
+        print("Checking Position");
+        Vector3 new_pos = transform.position;
+        if (Vector3.Distance(new_pos, current_pos) < move_threshold) {
+            Respawn();
+        }
+        current_pos = new_pos;
+        Invoke("Check_Pos", time_to_wait);
     }
 
     Transform GetClosestWaypoint(Transform[] waypoints, out int idx)
