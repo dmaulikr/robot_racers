@@ -23,7 +23,7 @@ public class lap_controller_s : MonoBehaviour {
             check++;
         }
 
-        if (lap > 3)
+        if (lap > the_game_controller.laps_to_win)
             the_game_controller.Finish(gameObject);
 
         Update_Lap_Display();
@@ -35,17 +35,17 @@ public class lap_controller_s : MonoBehaviour {
         my_pause = GetComponent<pause_controller_s>();
         my_wpt = GetComponent<WaypointProgressTracker>();
 
-        SetComponents();
         Update_Lap_Display();
+        SetComponents();
     }
 
     void SetComponents() {
         if (tag == "Player") {
-            my_ai.enabled = false;
+            //my_ai.enabled = false;
             my_wpt.enabled = false;
         } else {
             my_pause.enabled = false;
-            my_control.enabled = false;
+            //my_control.enabled = false;
         }
     }
 

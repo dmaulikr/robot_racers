@@ -1,16 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityStandardAssets.Vehicles.Car;
 
 public class game_controller_s : MonoBehaviour {
 
     public bool paused = true;
-    public int laps_to_win = 3;
+    public int laps_to_win = 1;
     public List<GameObject> winners = new List<GameObject>();
     private int place = 0;
     private bool begin = true;
 
     GameObject[] pauseObjects;
+    public GameObject[] racers;
     public countdown_s countdown;
 
     void Start() {
@@ -18,20 +20,30 @@ public class game_controller_s : MonoBehaviour {
         pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause");
         showPaused();
         countdown.hideCountdown();
+        TurnOffCars();
     }
 
     public void Finish(GameObject winner) {
         place++;
         winners.Add(winner);
-        if (place == 1) {
-            if (winner.tag == "Player") { Player_Win(); } else { NPC_Win(); }
+        if(winner.tag == "Player") {
+            if (place == 1) {
+                Player_Win(place); 
+            } else { 
+                NPC_Win(place); 
+            }
         }
     }
 
-    public void Player_Win() {
+    public void Player_Win(int place) {
+        "You Win!"
+        "You came in " place "!"
     }
 
-    public void NPC_Win() {
+    public void NPC_Win(int place) {
+        "Nice Try!"
+        "You came in " place "!"
+
     }
 
     public void TogglePause() {
@@ -70,4 +82,22 @@ public class game_controller_s : MonoBehaviour {
         countdown.showCountdown();
         Invoke("TurnOnCars", countdown.time);
     }
+
+    void TurnOnCars() {
+        foreach (GameObject g in racers) {
+            if (g.tag == "Player") {
+                g.GetComponent<CarUserControl>().enabled = true;
+            } else {
+                g.GetComponent<CarAIControl>().enabled = true;
+            }
+        }
+    }
+
+    void TurnOffCars() {
+        foreach (GameObject g in racers) {
+            g.GetComponent<CarUserControl>().enabled = false;
+            g.GetComponent<CarAIControl>().enabled = false;
+        }
+    }
+
 }

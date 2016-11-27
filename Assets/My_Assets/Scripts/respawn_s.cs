@@ -9,7 +9,7 @@ public class respawn_s : MonoBehaviour {
     public WaypointCircuit circuit;
 
     // For checking if car hasn't moved lately
-    public float time_to_wait = 2f;
+    public float time_to_wait = 5f;
     public float move_threshold = 0.5f;
     private Vector3 current_pos;
 
@@ -21,7 +21,7 @@ public class respawn_s : MonoBehaviour {
     void Start() {
         current_pos = transform.position;
         if (gameObject.tag == "NPC") {
-            Invoke("Check_Pos", time_to_wait);
+            Invoke("Check_Pos", time_to_wait*5);
         }
     }
 
@@ -61,9 +61,10 @@ public class respawn_s : MonoBehaviour {
     }
 
     void Check_Pos() {
-        print("Checking Position");
         Vector3 new_pos = transform.position;
-        if (Vector3.Distance(new_pos, current_pos) < move_threshold) {
+        float distance = Vector3.Distance(new_pos, current_pos);
+        if (distance < move_threshold) {
+            print("Distance less than 0.5 " + distance);
             Respawn();
         }
         current_pos = new_pos;

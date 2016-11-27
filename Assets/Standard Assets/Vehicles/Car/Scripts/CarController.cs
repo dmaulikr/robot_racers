@@ -28,7 +28,7 @@ namespace UnityStandardAssets.Vehicles.Car
         [Range(0, 1)] [SerializeField] private float m_TractionControl; // 0 is no traction control, 1 is full interference
         [SerializeField] private float m_FullTorqueOverAllWheels;
         [SerializeField] private float m_ReverseTorque;
-        [SerializeField] private float m_MaxHandbrakeTorque;
+        //[SerializeField] private float m_MaxHandbrakeTorque;
         [SerializeField] private float m_Downforce = 100f;
         [SerializeField] private float m_Jumpforce = 10000f;
         [SerializeField] private SpeedType m_SpeedType;
@@ -66,7 +66,7 @@ namespace UnityStandardAssets.Vehicles.Car
             }
             m_WheelColliders[0].attachedRigidbody.centerOfMass = m_CentreOfMassOffset;
 
-            m_MaxHandbrakeTorque = float.MaxValue;
+            //m_MaxHandbrakeTorque = float.MaxValue;
 
             m_Rigidbody = GetComponent<Rigidbody>();
             m_CurrentTorque = m_FullTorqueOverAllWheels - (m_TractionControl*m_FullTorqueOverAllWheels);
@@ -126,9 +126,9 @@ namespace UnityStandardAssets.Vehicles.Car
             Revs = ULerp(revsRangeMin, revsRangeMax, m_GearFactor);
         }
 
-
         public void Move(float steering, float accel, float footbrake, bool jump)
         {
+            //print(steering + " " + accel + " " + jump);
             for (int i = 0; i < 4; i++)
             {
                 Quaternion quat;
