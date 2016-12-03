@@ -8,6 +8,7 @@ namespace UnityStandardAssets.Vehicles.Car
     public class CarUserControl : MonoBehaviour
     {
         private CarController m_Car; // the car controller we want to use
+        private bool allow_jump = true;
 
         private void Awake()
         {
@@ -20,9 +21,21 @@ namespace UnityStandardAssets.Vehicles.Car
             // pass the input to the car!
             float h = CrossPlatformInputManager.GetAxis("Horizontal");
             float v = CrossPlatformInputManager.GetAxis("Vertical");
-            bool jump = CrossPlatformInputManager.GetButtonDown("Jump");
+            //Can only jump if haven't jumped in last 2 seconds...
+            bool jump = false;
+            if (allow_jump) {
+                jump = CrossPlatformInputManager.GetButtonDown("Jump");
+                if (jump) {
+                    allow_jump = false;
+                    Invoke("TurnOnJump", 2f);
+                }
+            }
             //print(h + " " + v + " " + jump);
             m_Car.Move(h, v, v, jump);
+        }
+
+        private void TurnOnJump() {
+            allow_jump = true;
         }
     }
 }

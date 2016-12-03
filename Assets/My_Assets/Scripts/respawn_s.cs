@@ -26,7 +26,7 @@ public class respawn_s : MonoBehaviour {
     }
 
     void OnTriggerEnter(Collider col) {
-        print("Collision!");
+        //print("Collision!");
         if (col.gameObject.tag == "Kill") {
             print("Tag: Kill!");
             Respawn();

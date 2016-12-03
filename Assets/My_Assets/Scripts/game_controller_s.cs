@@ -2,24 +2,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityStandardAssets.Vehicles.Car;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class game_controller_s : MonoBehaviour {
 
     public bool paused = true;
-    public int laps_to_win = 1;
+    public int laps_to_win = 2;
     public List<GameObject> winners = new List<GameObject>();
     private int place = 0;
+    //State Controllers
     private bool begin = true;
+    private bool win_loss = false;
 
     GameObject[] pauseObjects;
     public GameObject[] racers;
     public countdown_s countdown;
+
+    public GameObject win_screen;
+    public GameObject loss_screen;
+    public Text loss_place;
 
     void Start() {
         Time.timeScale = 0;
         pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause");
         showPaused();
         countdown.hideCountdown();
+        win_screen.SetActive(false);
+        loss_screen.SetActive(false);
         TurnOffCars();
     }
 
@@ -28,22 +38,33 @@ public class game_controller_s : MonoBehaviour {
         winners.Add(winner);
         if(winner.tag == "Player") {
             if (place == 1) {
+                print("Player Wins!");
                 Player_Win(place); 
-            } else { 
+            } else {
+                print("NPC Wins!");
                 NPC_Win(place); 
             }
         }
     }
 
     public void Player_Win(int place) {
-        "You Win!"
-        "You came in " place "!"
+        win_screen.SetActive(true);
+        win_loss = true;
     }
 
     public void NPC_Win(int place) {
-        "Nice Try!"
-        "You came in " place "!"
-
+        loss_screen.SetActive(true);
+        win_loss = true;
+        //Determine the ending for the place
+        string end_for_place;
+        if(place == 2) {
+            end_for_place = "nd";
+        } else if (place == 3) {
+            end_for_place = "rd";
+        } else {
+            end_for_place = "th";
+        }
+        loss_place.text = "You came in " + place + end_for_place + " place!";
     }
 
     public void TogglePause() {
@@ -100,4 +121,11 @@ public class game_controller_s : MonoBehaviour {
         }
     }
 
+    // Restart level if Space is pressed in the win or loss screen
+    void Update() {
+        if (win_loss && Input.GetKeyUp(KeyCode.Space)) {
+            //Application.LoadLevel(Application.loadedLevel); Apparently obsolete?
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+    }
 }

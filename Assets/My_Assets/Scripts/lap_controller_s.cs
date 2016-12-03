@@ -8,6 +8,7 @@ public class lap_controller_s : MonoBehaviour {
 
     private int lap = 0;
     private int check = 0;
+    private bool finish = false;
     public game_controller_s the_game_controller;
     public Text lap_display;
 
@@ -23,7 +24,8 @@ public class lap_controller_s : MonoBehaviour {
             check++;
         }
 
-        if (lap > the_game_controller.laps_to_win)
+        if (lap > the_game_controller.laps_to_win && !finish)
+            finish = true;
             the_game_controller.Finish(gameObject);
 
         Update_Lap_Display();
