@@ -24,9 +24,10 @@ public class lap_controller_s : MonoBehaviour {
             check++;
         }
 
-        if (lap > the_game_controller.laps_to_win && !finish)
+        if (lap > the_game_controller.laps_to_win && !finish) {
             finish = true;
             the_game_controller.Finish(gameObject);
+        }
 
         Update_Lap_Display();
     }

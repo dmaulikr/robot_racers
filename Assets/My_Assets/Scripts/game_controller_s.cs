@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class game_controller_s : MonoBehaviour {
 
     public bool paused = true;
-    public int laps_to_win = 2;
+    public int laps_to_win = 1;
     public List<GameObject> winners = new List<GameObject>();
     private int place = 0;
     //State Controllers
@@ -36,6 +36,7 @@ public class game_controller_s : MonoBehaviour {
     public void Finish(GameObject winner) {
         place++;
         winners.Add(winner);
+
         if(winner.tag == "Player") {
             if (place == 1) {
                 print("Player Wins!");
