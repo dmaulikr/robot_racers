@@ -12,6 +12,11 @@ public class respawn_s : MonoBehaviour {
     public float time_to_wait = 5f;
     public float move_threshold = 0.5f;
     private Vector3 current_pos;
+    private Rigidbody m_Rigidbody;
+
+    public GameObject normal_robot;
+    public GameObject ragdoll_robot;
+    public GameObject ragdoll_prefab;
 
 	// Use this for initialization
 	void Awake () {
@@ -19,6 +24,7 @@ public class respawn_s : MonoBehaviour {
 	}
 
     void Start() {
+        m_Rigidbody = GetComponent<Rigidbody>();
         current_pos = transform.position;
         if (gameObject.tag == "NPC") {
             Invoke("Check_Pos", time_to_wait*5);
@@ -52,12 +58,44 @@ public class respawn_s : MonoBehaviour {
         transform.rotation = Quaternion.LookRotation(look_pos);
         // Start 10 meters in air
         transform.Translate(transform.up * 10);
+        // Swap back in the non ragdoll
+        SwapBack();
     }
 
     void Update() {
-        if (Input.GetKeyUp(KeyCode.R)) {
-            Respawn();
+        if (gameObject.tag == "Player") {
+            if (Input.GetKeyUp(KeyCode.R)) {
+                Jettison();
+                //Respawn();
+            }
+            /*
+            if (Input.GetKeyUp(KeyCode.T)) {
+                Jettison();
+            }
+            if (Input.GetKeyUp(KeyCode.Y)) {
+                SwapBack();
+            }*/
         }
+    }
+
+    void Jettison() {
+        // swap robot kyle with ragdoll
+        normal_robot.SetActive(false);
+        ragdoll_robot.SetActive(true);
+        //ragdoll_robot.GetComponent<Rigidbody>().AddForce(transform.up * 20000, ForceMode.Impulse);
+        m_Rigidbody.AddForce(transform.up * 10000, ForceMode.Impulse);
+        Invoke("Respawn", 1f);
+    }
+
+    void SwapBack() {
+        // swap ragdoll with robot kyle
+        normal_robot.SetActive(true);
+        Destroy(ragdoll_robot);
+        ragdoll_robot = (GameObject)Instantiate(ragdoll_prefab, transform);
+        //Parent it to the Car
+        ragdoll_robot.transform.parent = gameObject.transform;
+        ragdoll_robot.transform.localPosition = new Vector3(0f, 0.5f, 0.45f);
+        ragdoll_robot.transform.localScale = new Vector3(2f, 2f, 2f);
     }
 
     void Check_Pos() {

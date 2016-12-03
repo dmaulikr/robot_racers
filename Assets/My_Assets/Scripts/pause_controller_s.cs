@@ -4,6 +4,7 @@ using System.Collections;
 public class pause_controller_s : MonoBehaviour {
     public game_controller_s the_game_controller;
 
+    //Rigidbody[] rigidbodies;
     void Update() {
         if (the_game_controller.paused) {
             if (Input.anyKey) {
@@ -16,5 +17,13 @@ public class pause_controller_s : MonoBehaviour {
             }
         }
     }
+
+    // Turn off Rigidbodies
+    /*void Start() {
+        foreach(Rigidbody rb in rigidbodies) {
+            rb.enabled = false;
+        }
+    }*/
+
 }
 
