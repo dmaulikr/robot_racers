@@ -18,6 +18,8 @@ public class respawn_s : MonoBehaviour {
     public GameObject ragdoll_robot;
     public GameObject ragdoll_prefab;
 
+    private bool allow_jettison = true;
+
 	// Use this for initialization
 	void Awake () {
         rb = GetComponent<Rigidbody>();
@@ -34,13 +36,13 @@ public class respawn_s : MonoBehaviour {
     void OnTriggerEnter(Collider col) {
         //print("Collision!");
         if (col.gameObject.tag == "Kill") {
-            print("Tag: Kill!");
-            Respawn();
+            //print("Tag: Kill!");
+            Jettison();
         }
     }
 
     void Respawn() {
-        print("Respawn");
+        //print("Respawn");
         int idx;
         // Set velocity to 0
         rb.velocity = Vector3.zero;
@@ -63,11 +65,11 @@ public class respawn_s : MonoBehaviour {
     }
 
     void Update() {
-        if (gameObject.tag == "Player") {
-            if (Input.GetKeyUp(KeyCode.R)) {
-                Jettison();
-                //Respawn();
-            }
+        if (gameObject.tag == "Player" && allow_jettison && Input.GetKeyUp(KeyCode.R)) {
+            allow_jettison = false;
+            Jettison();
+            Invoke("AllowJettison", 3f);
+        }
             /*
             if (Input.GetKeyUp(KeyCode.T)) {
                 Jettison();
@@ -75,7 +77,6 @@ public class respawn_s : MonoBehaviour {
             if (Input.GetKeyUp(KeyCode.Y)) {
                 SwapBack();
             }*/
-        }
     }
 
     void Jettison() {
@@ -98,12 +99,16 @@ public class respawn_s : MonoBehaviour {
         ragdoll_robot.transform.localScale = new Vector3(2f, 2f, 2f);
     }
 
+    void AllowJettison() {
+        allow_jettison = true;
+    }
+
     void Check_Pos() {
         Vector3 new_pos = transform.position;
         float distance = Vector3.Distance(new_pos, current_pos);
         if (distance < move_threshold) {
-            print("Distance less than 0.5 " + distance);
-            Respawn();
+            //print("Distance less than 0.5 " + distance);
+            Jettison();
         }
         current_pos = new_pos;
         Invoke("Check_Pos", time_to_wait);

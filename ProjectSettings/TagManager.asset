@@ -8,6 +8,8 @@ TagManager:
   - Kill
   - Crate
   - NPC
+  - Oil
+  - Invincible
   layers:
   - Default
   - TransparentFX

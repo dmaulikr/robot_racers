@@ -23,6 +23,9 @@ public class game_controller_s : MonoBehaviour {
     public GameObject loss_screen;
     public Text loss_place;
 
+    public GameObject oil_icon;
+    public GameObject lightning_icon;
+
     void Start() {
         Time.timeScale = 0;
         pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause");

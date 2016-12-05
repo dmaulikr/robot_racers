@@ -25,13 +25,13 @@ namespace UnityStandardAssets.Vehicles.Car
         [SerializeField] [Range(0, 180)] private float m_CautiousMaxAngle = 50f;                  // angle of approaching corner to treat as warranting maximum caution
         [SerializeField] private float m_CautiousMaxDistance = 100f;                              // distance at which distance-based cautiousness begins
         [SerializeField] private float m_CautiousAngularVelocityFactor = 30f;                     // how cautious the AI should be when considering its own current angular velocity (i.e. easing off acceleration if spinning!)
-        [SerializeField] private float m_SteerSensitivity = 0.05f;                                // how sensitively the AI uses steering input to turn to the desired direction
+        [SerializeField] private float m_SteerSensitivity = 0.01f;                                // how sensitively the AI uses steering input to turn to the desired direction
         [SerializeField] private float m_AccelSensitivity = 0.04f;                                // How sensitively the AI uses the accelerator to reach the current desired speed
         [SerializeField] private float m_BrakeSensitivity = 1f;                                   // How sensitively the AI uses the brake to reach the current desired speed
-        [SerializeField] private float m_LateralWanderDistance = 3f;                              // how far the car will wander laterally towards its target
-        [SerializeField] private float m_LateralWanderSpeed = 0.1f;                               // how fast the lateral wandering will fluctuate
-        [SerializeField] [Range(0, 1)] private float m_AccelWanderAmount = 0.1f;                  // how much the cars acceleration will wander
-        [SerializeField] private float m_AccelWanderSpeed = 0.1f;                                 // how fast the cars acceleration wandering will fluctuate
+        [SerializeField] private float m_LateralWanderDistance = 0f;                              // how far the car will wander laterally towards its target
+        [SerializeField] private float m_LateralWanderSpeed = 0f;                               // how fast the lateral wandering will fluctuate
+        [SerializeField] [Range(0, 1)] private float m_AccelWanderAmount = 0f;                  // how much the cars acceleration will wander
+        [SerializeField] private float m_AccelWanderSpeed = 0f;                                 // how fast the cars acceleration wandering will fluctuate
         [SerializeField] private BrakeCondition m_BrakeCondition = BrakeCondition.TargetDistance; // what should the AI consider when accelerating/braking?
         [SerializeField] private bool m_Driving;                                                  // whether the AI is currently actively driving or stopped.
         [SerializeField] private Transform m_Target;                                              // 'target' the target object to aim for.

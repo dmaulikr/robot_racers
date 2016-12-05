@@ -32,7 +32,7 @@ namespace UnityStandardAssets.Vehicles.Car
         [SerializeField] private float m_Downforce = 100f;
         [SerializeField] private float m_Jumpforce = 10000f;
         [SerializeField] private SpeedType m_SpeedType;
-        [SerializeField] private float m_Topspeed = 200;
+        [SerializeField] public float m_Topspeed = 60;
         [SerializeField] private static int NoOfGears = 5;
         [SerializeField] private float m_RevRangeBoundary = 1f;
         [SerializeField] private float m_SlipLimit;
@@ -370,6 +370,16 @@ namespace UnityStandardAssets.Vehicles.Car
                 }
             }
             return false;
+        }
+
+        public void SpinOut(Vector3 dir) {
+            m_SteerHelper = 0.1f;
+            m_Rigidbody.AddForce(dir*0.4f, ForceMode.Impulse);
+            Invoke("ResetSteerHelper", 2f);
+        }
+
+        public void ResetSteerHelper() {
+            m_SteerHelper = 0.8f;
         }
     }
 }

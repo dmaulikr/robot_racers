@@ -3,33 +3,19 @@ using System.Collections;
 
 public class Crate_s : MonoBehaviour {
 
-	Component collide;
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public BoxCollider my_box;
+    public MeshRenderer my_mesh;
 	
 	void OnTriggerEnter(Collider coll)
     {
-		collide = GetComponent("BoxCollider");
-		collide.GetType().GetProperty("enabled").SetValue(collide, false, null);
-		collide = GetComponent("MeshRenderer");
-		collide.GetType().GetProperty("enabled").SetValue(collide, false, null);
-		respawnCrate(coll);
+        my_box.enabled = false;
+        my_mesh.enabled = false;
+        Invoke("respawnCrate", 30f);
 	}	
 	
-	IEnumerator respawnCrate(Collider col)
+	void respawnCrate()
 	{
-		yield return new WaitForSeconds(30);
-		Component collide = GetComponent("Box Collider");
-		collide.GetType().GetProperty("enabled").SetValue(collide, true, null);
-		collide = GetComponent("Mesh Renderer");
-		collide.GetType().GetProperty("enabled").SetValue(collide, true, null);
+        my_box.enabled = true;
+        my_mesh.enabled = true;
 	}
 }
